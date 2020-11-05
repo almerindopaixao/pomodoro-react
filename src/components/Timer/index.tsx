@@ -1,6 +1,8 @@
 import React from 'react';
 import secondsToTime from '../../utils/seconds-to-time';
 
+import './styles.css';
+
 interface Props {
   mainTime: number;
 }

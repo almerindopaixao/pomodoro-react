@@ -1,0 +1,30 @@
+.pomodoro-button {
+  background: #41e1ba;
+  cursor: pointer;
+  border: none;
+  padding: 10px 25px;
+  color: #000;
+  border-radius: 20px;
+  transition: background-color 300ms ease-in-out;
+  margin: 20px auto;
+}
+
+.working .pomodoro-button {
+  background: #EF5D50;
+  cursor: pointer;
+  border: none;
+  padding: 10px 25px;
+  color: #fff;
+  border-radius: 20px;
+  transition: background-color 300ms ease-in-out;
+  margin: 20px auto;
+}
+
+.pomodoro-button:hover {
+  opacity: .8;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .3);
+}
+
+.pomodoro-button:active {
+  background: #fff;
+}
