@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import useInterval from '../../hooks/user-interval';
 import Button from '../Button';
 import Timer from '../Timer';
 
 import bellStart from '../../assets/sounds/bell-start.mp3';
-// import bellFinish from '../../assets/sounds/bell-finish.mp3';
+import bellFinish from '../../assets/sounds/bell-finish.mp3';
 
 import './styles.css';
-import secondsToTime from '../../utils/seconds-to-time';
+
+import SecondsToHours from '../../utils/seconds-to-hours';
 
 const audioStartWorking = new Audio(bellStart);
-// const audioStopWorking = new Audio(bellFinish);
+const audioStopWorking = new Audio(bellFinish);
 
 interface Props {
   pomodoroTime: number;
@@ -40,31 +41,42 @@ export default function PomodoroTimer({
   useInterval(
     () => {
       setMainTime(mainTime - 1);
+      if (working) setFullWorkingTime(fullWorkingTime + 1);
     },
     timeCounting ? 1000 : null,
   );
 
-  const configureWork = () => {
+  const configureWork = useCallback(() => {
     setTimeCounting(true);
     setWorking(true);
     setResting(false);
     setMainTime(pomodoroTime);
     audioStartWorking.play();
-  };
+  }, [setTimeCounting, setWorking, setResting, setMainTime, pomodoroTime]);
 
-  const configureRest = (long: boolean) => {
-    setTimeCounting(true);
-    setWorking(false);
-    setResting(true);
+  const configureRest = useCallback(
+    (long: boolean) => {
+      setTimeCounting(true);
+      setWorking(false);
+      setResting(true);
 
-    if (long) {
-      setMainTime(longRestTime);
-    } else {
-      setMainTime(shortRestTime);
-    }
+      if (long) {
+        setMainTime(longRestTime);
+      } else {
+        setMainTime(shortRestTime);
+      }
 
-    audioStartWorking.play();
-  };
+      audioStopWorking.play();
+    },
+    [
+      setTimeCounting,
+      setWorking,
+      setResting,
+      setMainTime,
+      longRestTime,
+      shortRestTime,
+    ],
+  );
 
   useEffect(() => {
     if (working) document.body.classList.add('working');
@@ -98,7 +110,7 @@ export default function PomodoroTimer({
 
   return (
     <div className="pomodoro">
-      <h2>You are: working</h2>
+      <h2>Você está: {working ? 'Trabalhando' : 'Descansando'}</h2>
       <Timer mainTime={mainTime} />
 
       <div className="controls">
@@ -123,7 +135,7 @@ export default function PomodoroTimer({
 
       <div className="details">
         <p>Ciclos concluídos: {completedCycles}</p>
-        <p>Horas trabalhadas: {secondsToTime(fullWorkingTime)}</p>
+        <p>Horas trabalhadas: {SecondsToHours(fullWorkingTime)}</p>
         <p>Pomodoros concluídos: {numberOfPomodoros}</p>
       </div>
     </div>
