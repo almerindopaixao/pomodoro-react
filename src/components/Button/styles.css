@@ -7,17 +7,13 @@
   border-radius: 20px;
   transition: background-color 300ms ease-in-out;
   margin: 20px auto;
+  min-width: 100px;
+  font-size: 15px;
 }
 
 .working .pomodoro-button {
   background: #EF5D50;
-  cursor: pointer;
-  border: none;
-  padding: 10px 25px;
   color: #fff;
-  border-radius: 20px;
-  transition: background-color 300ms ease-in-out;
-  margin: 20px auto;
 }
 
 .pomodoro-button:hover {
